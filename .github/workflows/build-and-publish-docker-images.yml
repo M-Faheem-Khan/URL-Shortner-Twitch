@@ -38,12 +38,16 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: backend:${{ github.sha }}
+      defaults:
+        run: 
+          working-directory: ./backend
       run: |
         echo "IMAGE_TAG: ${IMAGE_TAG}"
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -f backend/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        cd backend
+        docker build -f -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -52,11 +56,15 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: frontend:${{ github.sha }}
+      defaults:
+        run: 
+          working-directory: ./frontend
       run: |
         echo "IMAGE_TAG: ${IMAGE_TAG}"
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -f frontend/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        cd frontend
+        docker build -f -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
