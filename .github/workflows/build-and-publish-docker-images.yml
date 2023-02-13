@@ -6,14 +6,15 @@ on:
 
 env:
   AWS_REGION: "us-east-1"                     # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: "url-shortner"              # set this to your Amazon ECR repository name
+  FRONTEND_ECR_REPOSITORY: "url-shortner-frontend"              # set this to your Amazon ECR repository name
+  BACKEND_ECR_REPOSITORY: "url-shortner-backend"              # set this to your Amazon ECR repository name
 
 
 permissions:
   contents: read
 
 jobs:
-  deploy-to-ecr:
+  deploy-docker-images-to-ecr:
     name: Deploy frontend image to AWS ECR
     runs-on: ubuntu-latest
     environment: production
@@ -40,6 +41,17 @@ jobs:
         IMAGE_TAG: latest
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        docker build -f Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker build -f Dockerfile -t $ECR_REGISTRY/$FRONTEND_ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$FRONTEND_ECR_REPOSITORY:${{ github.SHA }}.
+        docker push $ECR_REGISTRY/$FRONTEND_ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$FRONTEND_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Push backend image to Amazon ECR
+      id: push-backend-image
+      working-directory: ./backend/
+      env:
+        IMAGE_TAG: latest
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        docker build -f Dockerfile -t $ECR_REGISTRY/$BACKEND_ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$BACKEND_ECR_REPOSITORY:${{ github.SHA }}.
+        docker push $ECR_REGISTRY/$BACKEND_ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$BACKEND_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
