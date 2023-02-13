@@ -4,11 +4,6 @@ on:
   push:
     branches: [ "main" ]
 
-env:
-  AWS_REGION: "us-east-1"                     # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: "url-shortner"              # set this to your Amazon ECR repository name
-  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in
-
 permissions:
   contents: read
 
@@ -19,15 +14,15 @@ jobs:
     environment: production
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Checkout 
+    - name: Checkout repository
+    - uses: actions/checkout@v3
 
-      - name: Build & Tag Image
-        working-directory: ./frontend/
-        env:
-          IMAGE_TAG: backend:${{ github.sha }}
-        run: |
-          echo "Current Directory: $(pwd)"
-          echo "Building Frontend Docker Image"
-          echo "IMAGE_TAG: ${IMAGE_TAG}"
-          docker build . -t $IMAGE_TAG
+    - name: Build & tag frontend Image
+      working-directory: ./frontend/
+      env:
+        IMAGE_TAG: backend:${{ github.sha }}
+      run: |
+        echo "Current Directory: $(pwd)"
+        echo "Building Frontend Docker Image"
+        echo "IMAGE_TAG: ${IMAGE_TAG}"
+        docker build . -t $IMAGE_TAG
