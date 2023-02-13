@@ -25,7 +25,7 @@ jobs:
       - name: Build & Tag Image
         env:
           IMAGE_TAG: backend:${{ github.sha }}
-        run:  |
+        run: |
           echo "Building Frontend Docker Image"
           echo "IMAGE_TAG: ${IMAGE_TAG}"
           docker build . -t $IMAGE_TAG
@@ -42,7 +42,7 @@ jobs:
       - name: Build & Tag Image
         env:
           IMAGE_TAG: backend:${{ github.sha }}
-        run:  |
+        run: |
           echo "Building Backend Docker Image"
           echo "IMAGE_TAG: ${IMAGE_TAG}"
           docker build . -t $IMAGE_TAG
