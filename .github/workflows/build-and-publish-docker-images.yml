@@ -20,9 +20,24 @@ jobs:
     - name: Build & tag frontend Image
       working-directory: ./frontend/
       env:
+        IMAGE_TAG: frontend:${{ github.sha }}
+      run: |
+        echo "IMAGE_TAG: ${IMAGE_TAG}"
+        docker build . -t $IMAGE_TAG
+
+  build-backend:
+    name: Build backend docker image
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Build & tag backend Image
+      working-directory: ./backend/
+      env:
         IMAGE_TAG: backend:${{ github.sha }}
       run: |
-        echo "Current Directory: $(pwd)"
-        echo "Building Frontend Docker Image"
         echo "IMAGE_TAG: ${IMAGE_TAG}"
         docker build . -t $IMAGE_TAG
