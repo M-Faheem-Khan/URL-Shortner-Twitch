@@ -37,7 +37,7 @@ jobs:
       id: build-backend-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: backend:${{ github.sha }}[:6]
+        IMAGE_TAG: backend:${{ github.sha::7 }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
@@ -50,7 +50,7 @@ jobs:
       id: build-frontend-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: frontend:${{ github.sha }}[:6]
+        IMAGE_TAG: frontend:${{ github.sha::7 }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
