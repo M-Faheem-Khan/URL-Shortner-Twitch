@@ -19,8 +19,10 @@ jobs:
     environment: production
 
     steps:
-      - name: Build & Tag Image
       - uses: actions/checkout@v3
+      - name: Checkout 
+
+      - name: Build & Tag Image
         working-directory: ./frontend/
         env:
           IMAGE_TAG: backend:${{ github.sha }}
