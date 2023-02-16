@@ -3,6 +3,7 @@ version: '3'
 services:
   frontend:
     build: frontend
+    container_name: frontend
     ports:
       - '3030:3000'
       - '8080:80'
@@ -11,6 +12,7 @@ services:
 
   backend: 
     build: backend
+    container_name: backend
     ports:
       - '3000:3000'
     depends_on:
