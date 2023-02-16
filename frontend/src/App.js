@@ -7,7 +7,7 @@ const App = () => {
   const [shortURL, setShortURL] = useState("");
 
   const getShortURL = () => {
-    const URL = "http://localhost:3000/api/v1/shorten"
+    const URL = "http://backend:3000/api/v1/shorten"
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -19,7 +19,7 @@ const App = () => {
         console.error(data.error)
         setShortURL("Server error - try again?");
       } else {
-        setShortURL("http://localhost:3000/" + data.shortID)
+        setShortURL("http://backend:3000/" + data.shortID)
       }
     });
   }
@@ -43,7 +43,7 @@ const App = () => {
           <div className="mx-auto max-w-screen-md sm:text-center">
             <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl dark:text-white">Shorten URL</h2>
             <p className="mx-auto mb-8 max-w-2xl font-light text-gray-500 md:mb-12 sm:text-xl dark:text-gray-400">Links live for 24 hours.</p>
-            <form action="#">
+            <form action="#" onSubmit={(e) => e.preventDefault()}>
               <div className="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
                 <div className="relative w-full">
                   <label htmlFor="email" className="hidden mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">URL</label>
