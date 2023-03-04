@@ -7,7 +7,7 @@ const App = () => {
   const [shortURL, setShortURL] = useState("");
 
   const getShortURL = () => {
-    const URL = "http://backend:3000/api/v1/shorten"
+    const URL = "http://localhost:3000/api/v1/shorten"
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -19,7 +19,7 @@ const App = () => {
         console.error(data.error)
         setShortURL("Server error - try again?");
       } else {
-        setShortURL("http://backend:3000/" + data.shortID)
+        setShortURL("http://localhost:3000/" + data.shortID)
       }
     });
   }
